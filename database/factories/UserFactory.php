@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -21,9 +23,19 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create('pt_BR');
+        $faker->addProvider(new \Faker\Provider\pt_BR\Person($faker));
+        $faker->addProvider(new \Faker\Provider\pt_BR\PhoneNumber($faker));
+        $faker->addProvider(new \Faker\Provider\Internet($faker));
+
+
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
+            'status' => rand(0,1) ? 'active':'inactive',
+            'name' => $faker->name(),
+            'email' => $faker->freeEmail(),
+            'phone' => $faker->phoneNumber(),
+            'cpf' => $faker->cpf(true),
+            'password' => Hash::make('12345678')
         ];
     }
 }

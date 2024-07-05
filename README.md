@@ -24,4 +24,9 @@ docker exec -it app bash
 ```sh
 composer install
 ```
+5. Com elas devidamente instaladas vamos ao processamento das migrations 
+
+```sh
+ php artisan migrate
+```
   

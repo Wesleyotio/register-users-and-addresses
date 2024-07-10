@@ -197,7 +197,7 @@ class UserTest extends TestCase
 
         $token = $responseLogin['token'];
 
-        $responseUser = $this->call('POST', 'api/user/delete', [
+        $responseUser = $this->call('DELETE', 'api/user/delete', [
             'password'      => '12345678',
            
         ], [],[], [

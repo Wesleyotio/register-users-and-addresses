@@ -195,7 +195,7 @@ class AddressTest extends TestCase
 
         $url = 'api/user/address/delete/' . $address->id;
 
-        $responseUser = $this->call('POST', $url, [
+        $responseUser = $this->call('DELETE', $url, [
             'password'      => '12345678',
         ], [],[], [
             "Authorization" => "Bearer ". $token,

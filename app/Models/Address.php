@@ -24,6 +24,16 @@ class Address extends Model
         'country'
     ];
 
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var string[]
+     */
+    protected $hidden = [
+        'user_id',
+        'created_at',
+        'updated_at'
+    ];
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

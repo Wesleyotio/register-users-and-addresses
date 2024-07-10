@@ -36,8 +36,32 @@ class UserController extends Controller
      *     tags={"User"},
      *     @OA\Response(
      *         response=200,
-     *         description="Lista o usuário conectado e seus endereços"
-     *     )
+     *         description="Lista o usuário conectado e seus endereços",
+     *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="user",
+ *                 type="object",
+ *                 @OA\Property(property="id", type="integer", example=46),
+ *                 @OA\Property(property="status", type="string", example="inactive"),
+ *                 @OA\Property(property="name", type="string", example="Dr. Adriele Daniele Bonilha"),
+ *                 @OA\Property(property="email", type="string", example="josefina.dacruz@yahoo.com"),
+ *                 @OA\Property(property="cpf", type="string", example="190.176.342-00"),
+ *                 @OA\Property(property="phone", type="string", example="(68) 96398-7768"),
+ *                 @OA\Property(
+ *                     property="addresses",
+ *                     type="array",
+ *                     @OA\Items(
+ *                         @OA\Property(property="id", type="integer", example=117),
+ *                         @OA\Property(property="address", type="string", example="37059-597, R. Aurora, 226. Bc. 35 Ap. 12\nPorto Regiane do Sul - MG"),
+ *                         @OA\Property(property="postcode", type="string", example="63600-159"),
+ *                         @OA\Property(property="city", type="string", example="São Benedito"),
+ *                         @OA\Property(property="stateAbbr", type="string", example="ES"),
+ *                         @OA\Property(property="country", type="string", example="Vanuatu")
+ *                     )
+ *                 )
+ *             )
+ *         )
+*     )
      * )
      */
     public function index() 
@@ -62,17 +86,20 @@ class UserController extends Controller
      *     @OA\RequestBody(
      *         required=true,
     *             @OA\JsonContent(
-    *             @OA\Property(property="name", type="string", nullable=true),
-    *             @OA\Property(property="email", type="string", nullable=true),
-    *             @OA\Property(property="phone", type="string", nullable=true),
-    *             @OA\Property(property="cpf", type="string", nullable=true),
-    *             @OA\Property(property="password", type="string"),
-    *             @OA\Property(property="new_password", type="string", nullable=true)
+    *             @OA\Property(property="name", type="string", nullable=true, example="Jão do Teste"),
+    *             @OA\Property(property="email", type="string", nullable=true, example="jao@email.com"),
+    *             @OA\Property(property="phone", type="string", nullable=true, example="(99) 99234-9876"),
+    *             @OA\Property(property="cpf", type="string", nullable=true, example="999.111.000-09"),
+    *             @OA\Property(property="password", type="string", example="10987654321"),
+    *             @OA\Property(property="new_password", type="string", nullable=true, example="12345678")
     *              )
         *     ),
         *     @OA\Response(
         *         response=200,
-        *         description="Atualiza dados do usuário conectado"
+        *         description="Atualiza dados do usuário conectado",
+    *             @OA\JsonContent(
+    *                @OA\Property(property="message", type="string", example="Updated successfully")
+    *             )
         *     )
         * )
         */
@@ -115,7 +142,10 @@ class UserController extends Controller
      *     tags={"User"},
      *     @OA\Response(
      *         response=200,
-     *         description="Remove usuário conectado assim como todos os endereços associados a ele"
+     *         description="Remove usuário conectado assim como todos os endereços associados a ele",
+     *         @OA\JsonContent(
+    *                @OA\Property(property="message", type="string", example="successfully deleted user")
+    *          )
      *     )
      * )
      */

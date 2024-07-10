@@ -30,8 +30,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         
         $router->get('/user', ['as' => 'index.user', 'uses' => 'UserController@index']);
         $router->put('/user/update', ['as' => 'update.user', 'uses' => 'UserController@update']);
-        $router->post('user/delete', ['as' => 'delete.user', 'uses' => 'UserController@delete']);
+        $router->post('/user/delete', ['as' => 'delete.user', 'uses' => 'UserController@delete']);
 
+        $router->get('/user/address[/{id}]', ['as' => 'index.address', 'uses' => 'AddressController@index']);
+        $router->post('/user/address/create', ['as' => 'create.address', 'uses' => 'AddressController@create']);
+        $router->put('/user/address/update/{id}', ['as' => 'update.address', 'uses' => 'AddressController@update']);
+        $router->post('/user/address/delete/{id}', ['as' => 'delete.address', 'uses' => 'AddressController@delete']);
 
     });
 });

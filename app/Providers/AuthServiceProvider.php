@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Repositories\AuthRepositoryImpl;
+use App\Repositories\Interfaces\AuthRepository;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(AuthRepository::class, AuthRepositoryImpl::class);
     }
 
     /**

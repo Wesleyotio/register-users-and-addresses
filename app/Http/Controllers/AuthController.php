@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Hashing\BcryptHasher;
-use Illuminate\Support\Facades\Hash;
+use App\Repositories\Interfaces\AuthRepository;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -14,7 +12,7 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private AuthRepository $authRepository)
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
@@ -25,16 +23,15 @@ class AuthController extends Controller
         if ($this->isValidRegisterData($request)){
 
             try {
-        
-                User::create([
-                    'status' => 'active',
-                    'name' => $request->input('name'),
-                    'cpf' => $request->input('cpf'),
-                    'email' => $request->input('email'),
-                    'phone' => $request->input('phone'),
-                    'password' => Hash::make($request->input('password'))
-    
-                ]);  
+
+                $this->authRepository->register(
+                    $request->input('name'),
+                    $request->input('cpf'),
+                    $request->input('email'),
+                    $request->input('phone'),
+                    $request->input('password')
+                );
+                
                 return response()->json(['message' => 'User successfully registered'], 201,['Content-Type' =>'application/json']);
                 
             } catch (\Throwable $th) {

@@ -75,7 +75,21 @@ class AddressController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="List of users or a specific user"
+     *         description="List of users or a specific user",
+     *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="addresses",
+ *                 type="array",
+ *                 @OA\Items(
+ *                     @OA\Property(property="id", type="integer", example=118),
+ *                     @OA\Property(property="address", type="string", example="06262-340, R. Alcantara, 90125. Bloco C\nPietra do Norte - PR"),
+ *                     @OA\Property(property="postcode", type="string", example="77999-726"),
+ *                     @OA\Property(property="city", type="string", example="Quintana do Sul"),
+ *                     @OA\Property(property="stateAbbr", type="string", example="SE"),
+ *                     @OA\Property(property="country", type="string", example="Vietnã")
+ *                 )
+ *             )
+ *         )
      *     )
      * )
      */
@@ -134,16 +148,20 @@ class AddressController extends Controller
      *     @OA\RequestBody(
      *         required=true,
     *             @OA\JsonContent(
-    *             @OA\Property(property="address", type="string"),
-    *             @OA\Property(property="postcode", type="string"),
-    *             @OA\Property(property="city", type="string"),
-    *             @OA\Property(property="stateAbbr", type="string"),
-    *             @OA\Property(property="country", type="string")
+    *             @OA\Property(property="address", type="string", example="Rua do Meio, 2525"),
+    *             @OA\Property(property="postcode", type="string", example="62900-000"),
+    *             @OA\Property(property="city", type="string", example="Ocara"),
+    *             @OA\Property(property="stateAbbr", type="string", example="CE"),
+    *             @OA\Property(property="country", type="string", example="Brazil")
     *              )
     *     ),
     *     @OA\Response(
     *         response=201,
-    *         description="Endereço criado com sucesso"
+    *         description="Endereço criado com sucesso",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="Created successfully address")
+    *             
+    *         )
     *     )
     * )
     */
@@ -181,16 +199,20 @@ class AddressController extends Controller
      *     @OA\RequestBody(
      *         required=true,
     *             @OA\JsonContent(
-    *             @OA\Property(property="address", type="string", nullable=true),
-    *             @OA\Property(property="postcode", type="string", nullable=true),
-    *             @OA\Property(property="city", type="string", nullable=true),
-    *             @OA\Property(property="stateAbbr", type="string", nullable=true),
-    *             @OA\Property(property="country", type="string", nullable=true)
+    *             @OA\Property(property="address", type="string", nullable=true, example="Rua do Meio, 2525"),
+    *             @OA\Property(property="postcode", type="string", nullable=true, example="62900-000"),
+    *             @OA\Property(property="city", type="string", nullable=true, example="Ocara"),
+    *             @OA\Property(property="stateAbbr", type="string", nullable=true, example="CE"),
+    *             @OA\Property(property="country", type="string", nullable=true, example="Brazil")
     *              )
     *     ),
     *     @OA\Response(
     *         response=200,
-    *         description="Endereço atualizado com sucesso"
+    *         description="Endereço atualizado com sucesso",
+    *          @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="Updated successfully address")
+    *             
+    *         )
     *     )
     * )
     */
@@ -233,7 +255,19 @@ class AddressController extends Controller
      *
     *     @OA\Response(
     *         response=200,
-    *         description="Endereço removido com sucesso"
+    *         description="Endereço removido com sucesso",
+    *          @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="Updated successfully address")
+    *             
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="Usuário não autorizado",
+    *          @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="Unauthorized")
+    *             
+    *         )
     *     )
     * )
     */

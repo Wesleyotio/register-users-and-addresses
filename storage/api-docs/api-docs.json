@@ -70,7 +70,48 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of users or a specific user"
+                        "description": "List of users or a specific user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "addresses": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 118
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "06262-340, R. Alcantara, 90125. Bloco C\\nPietra do Norte - PR"
+                                                    },
+                                                    "postcode": {
+                                                        "type": "string",
+                                                        "example": "77999-726"
+                                                    },
+                                                    "city": {
+                                                        "type": "string",
+                                                        "example": "Quintana do Sul"
+                                                    },
+                                                    "stateAbbr": {
+                                                        "type": "string",
+                                                        "example": "SE"
+                                                    },
+                                                    "country": {
+                                                        "type": "string",
+                                                        "example": "Vietnã"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -94,19 +135,24 @@
                             "schema": {
                                 "properties": {
                                     "address": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Rua do Meio, 2525"
                                     },
                                     "postcode": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "62900-000"
                                     },
                                     "city": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Ocara"
                                     },
                                     "stateAbbr": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "CE"
                                     },
                                     "country": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Brazil"
                                     }
                                 },
                                 "type": "object"
@@ -116,7 +162,20 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Endereço criado com sucesso"
+                        "description": "Endereço criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Created successfully address"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -152,22 +211,27 @@
                                 "properties": {
                                     "address": {
                                         "type": "string",
+                                        "example": "Rua do Meio, 2525",
                                         "nullable": true
                                     },
                                     "postcode": {
                                         "type": "string",
+                                        "example": "62900-000",
                                         "nullable": true
                                     },
                                     "city": {
                                         "type": "string",
+                                        "example": "Ocara",
                                         "nullable": true
                                     },
                                     "stateAbbr": {
                                         "type": "string",
+                                        "example": "CE",
                                         "nullable": true
                                     },
                                     "country": {
                                         "type": "string",
+                                        "example": "Brazil",
                                         "nullable": true
                                     }
                                 },
@@ -178,7 +242,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Endereço atualizado com sucesso"
+                        "description": "Endereço atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully address"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -206,7 +283,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Endereço removido com sucesso"
+                        "description": "Endereço removido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully address"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuário não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [

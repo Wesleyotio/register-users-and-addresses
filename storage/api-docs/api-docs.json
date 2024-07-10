@@ -216,6 +216,216 @@
                 ]
             }
         },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Register user",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João do Teste"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "João@teste.com"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "999.000.111-66"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "(88) 99233-4490"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "87654321"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully registered"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Login user and get authentication token",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "email@test.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9sb2dpbiIsImlhdCI6MTcyMDYyMTk2OCwiZXhwIjoxNzIwNjI1NTY4LCJuYmYiOjE3MjA2MjE5NjgsImp0aSI6Ilo3VU16TVhoek4wSXRqbXIiLCJzdWIiOiI0NiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.YfdDn3Ao5_2eq0JhsWTpP-jUCN9snUtBWQQHYbZ5Bik"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid credentials"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Shows the data of the logged-in user",
+                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "responses": {
+                    "200": {
+                        "description": "Usuário conectado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "active"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "João do Teste"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "João@teste.com"
+                                        },
+                                        "cpf": {
+                                            "type": "string",
+                                            "example": "999.000.111-66"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "(88) 99233-4490"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Shows the data of the logged-in user",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Usuário descontado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -313,6 +523,10 @@
         {
             "name": "Address",
             "description": "Operations on user addresses"
+        },
+        {
+            "name": "Authenticate",
+            "description": "Registration and user authentication"
         },
         {
             "name": "User",

@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use App\Repositories\Interfaces\AuthRepository;
 use Illuminate\Http\Request;
 
+/**
+ * 
+ * 
+ * @OA\Tag(
+ *     name="Authenticate",
+ *     description="Registration and user authentication"
+ * )
+ */
 class AuthController extends Controller
 {
     /**
@@ -17,6 +25,31 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="Register user",
+     *     tags={"Authenticate"},
+     *     @OA\RequestBody(
+     *         required=true,
+    *             @OA\JsonContent(
+    *             @OA\Property(property="name", type="string", example="João do Teste"),
+    *             @OA\Property(property="email", type="string", example="João@teste.com"),
+    *             @OA\Property(property="cpf", type="string", example="999.000.111-66"),
+    *             @OA\Property(property="phone", type="string", example="(88) 99233-4490"),
+    *             @OA\Property(property="password", type="string", example="87654321")
+    *              )
+    *     ),
+    *     @OA\Response(
+    *         response=201,
+    *         description="Usuário criado com sucesso",
+ *             @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="User successfully registered"),
+ *               
+ *         )
+    *     )
+    * )
+    */
     public function register(Request $request) 
     {
       
@@ -42,6 +75,36 @@ class AuthController extends Controller
 
     }
     //
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Login user and get authentication token",
+     *     tags={"Authenticate"},
+     *     @OA\RequestBody(
+     *         required=true,
+    *             @OA\JsonContent(
+    *             @OA\Property(property="email", type="string", example="email@test.com"),
+    *             @OA\Property(property="password", type="string", example="12345678")
+    *              )
+    *     ),
+    *     @OA\Response(
+ *         response=200,
+ *         description="Successful login",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9sb2dpbiIsImlhdCI6MTcyMDYyMTk2OCwiZXhwIjoxNzIwNjI1NTY4LCJuYmYiOjE3MjA2MjE5NjgsImp0aSI6Ilo3VU16TVhoek4wSXRqbXIiLCJzdWIiOiI0NiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.YfdDn3Ao5_2eq0JhsWTpP-jUCN9snUtBWQQHYbZ5Bik"),
+ *             @OA\Property(property="token_type", type="string", example="bearer"),
+ *             @OA\Property(property="expires_in", type="integer", example=3600)
+ *         )
+ *        ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="Invalid credentials",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="error", type="string", example="Invalid credentials")
+    *         )
+    *     )
+    * )
+    */
     public function login(Request $request)
     {
         if ($this->isValidLoginData($request)) {
@@ -69,6 +132,26 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+      /**
+     * @OA\Get(
+     *     path="/api/me",
+     *     summary="Shows the data of the logged-in user",
+     *     tags={"Authenticate"},
+     *     security={{"bearerAuth":{}}},
+    *     @OA\Response(
+    *         response=200,
+    *         description="Usuário conectado com sucesso",
+    *          @OA\JsonContent(
+    *             @OA\Property(property="status", type="string", example="active"),
+    *             @OA\Property(property="name", type="string", example="João do Teste"),
+    *             @OA\Property(property="email", type="string", example="João@teste.com"),
+    *             @OA\Property(property="cpf", type="string", example="999.000.111-66"),
+    *             @OA\Property(property="phone", type="string", example="(88) 99233-4490")
+    *              )
+    *     )
+    * )
+    */
     public function me()
     {
         return response()->json(auth()->user());
@@ -79,6 +162,23 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+       /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Shows the data of the logged-in user",
+     *     tags={"Authenticate"},
+     *     security={{"bearerAuth":{}}},
+    *     @OA\Response(
+    *         response=200,
+    *         description="Usuário descontado com sucesso",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="Successfully logged out")
+    *             
+    *         )
+    *     )
+    * )
+    */
     public function logout()
     {
         auth()->logout();

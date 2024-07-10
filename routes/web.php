@@ -26,6 +26,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/me', ['as' => 'me.user', 'uses' => 'AuthController@me']);
         $router->get('/refresh', ['as' => 'refresh.user', 'uses' => 'AuthController@refresh']);
         $router->post('/logout', ['as' => 'logout.user', 'uses' => 'AuthController@logout']);
+        
+        
+        $router->get('/user', ['as' => 'index.user', 'uses' => 'UserController@index']);
+        $router->put('/user/update', ['as' => 'update.user', 'uses' => 'UserController@update']);
+        $router->post('user/delete', ['as' => 'delete.user', 'uses' => 'UserController@delete']);
+
 
     });
 });

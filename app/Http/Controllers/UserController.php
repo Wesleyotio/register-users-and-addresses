@@ -6,6 +6,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @OA\Info(title="API Documentation", version="1.0.0")
+ */
+
+ /**
+ * @OA\Tag(
+ *     name="User",
+ *     description="Operations about users"
+ * )
+ */
 class UserController extends Controller
 {
 
@@ -18,7 +28,18 @@ class UserController extends Controller
     {
         //
     }
-
+    /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="List of user data and addresses",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"User"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista o usuário conectado e seus endereços"
+     *     )
+     * )
+     */
     public function index() 
     {
         
@@ -32,7 +53,29 @@ class UserController extends Controller
         }
 
     }
-
+    /**
+     * @OA\Put(
+     *     path="/api/user/update",
+     *     summary="Update logged in user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+    *             @OA\JsonContent(
+    *             @OA\Property(property="name", type="string", nullable=true),
+    *             @OA\Property(property="email", type="string", nullable=true),
+    *             @OA\Property(property="phone", type="string", nullable=true),
+    *             @OA\Property(property="cpf", type="string", nullable=true),
+    *             @OA\Property(property="password", type="string"),
+    *             @OA\Property(property="new_password", type="string", nullable=true)
+    *              )
+        *     ),
+        *     @OA\Response(
+        *         response=200,
+        *         description="Atualiza dados do usuário conectado"
+        *     )
+        * )
+        */
     public function update(Request $request)
     {
         if ($this->isValidUpdateData($request)) {
@@ -64,6 +107,18 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/delete",
+     *     summary="Delete and logout user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"User"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Remove usuário conectado assim como todos os endereços associados a ele"
+     *     )
+     * )
+     */
     public function delete(Request $request)
     {
         if ($this->isValidDeleteUser($request)) {

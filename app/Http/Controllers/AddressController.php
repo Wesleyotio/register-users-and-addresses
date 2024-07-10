@@ -6,6 +6,13 @@ use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+ /**
+ * @OA\Info(title="API Documentation", version="1.0.0")
+ * @OA\Tag(
+ *     name="Address",
+ *     description="Operations on user addresses"
+ * )
+ */
 class AddressController extends Controller
 {
 
@@ -18,7 +25,60 @@ class AddressController extends Controller
     {
         //
     }
-
+        /**
+     * @OA\Get(
+     *     path="/api/user/address/{id}",
+     *     summary="Get list of addresses or a specific user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"Address"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the address",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="country",
+     *         in="query",
+     *         description="Country of the user",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="address",
+     *         in="query",
+     *         description="Address of the user",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="postcode",
+     *         in="query",
+     *         description="Postcode of the user",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="city",
+     *         in="query",
+     *         description="City of the user",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="stateAbbr",
+     *         in="query",
+     *         description="State abbreviation of the user",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of users or a specific user"
+     *     )
+     * )
+     */
     public function index(Request $request) 
     {
         
@@ -65,7 +125,28 @@ class AddressController extends Controller
         }
 
     }
-
+    /**
+     * @OA\Post(
+     *     path="/api/user/address/create",
+     *     summary="Create address for user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"Address"},
+     *     @OA\RequestBody(
+     *         required=true,
+    *             @OA\JsonContent(
+    *             @OA\Property(property="address", type="string"),
+    *             @OA\Property(property="postcode", type="string"),
+    *             @OA\Property(property="city", type="string"),
+    *             @OA\Property(property="stateAbbr", type="string"),
+    *             @OA\Property(property="country", type="string")
+    *              )
+    *     ),
+    *     @OA\Response(
+    *         response=201,
+    *         description="Endereço criado com sucesso"
+    *     )
+    * )
+    */
     public function create(Request $request)
     {
         if ($this->isValidAddressData($request)) {
@@ -84,6 +165,35 @@ class AddressController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/user/address/update/{id}",
+     *     summary="Update address for user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"Address"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the address",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+    *             @OA\JsonContent(
+    *             @OA\Property(property="address", type="string", nullable=true),
+    *             @OA\Property(property="postcode", type="string", nullable=true),
+    *             @OA\Property(property="city", type="string", nullable=true),
+    *             @OA\Property(property="stateAbbr", type="string", nullable=true),
+    *             @OA\Property(property="country", type="string", nullable=true)
+    *              )
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Endereço atualizado com sucesso"
+    *     )
+    * )
+    */
     public function update(Request $request)
     {
         if ($this->isValidUpdateAddressData($request)) {
@@ -107,6 +217,26 @@ class AddressController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/address/update/{id}",
+     *     summary="Delete address for user",
+     *     security={{"bearerAuth":{}}},
+     *     tags={"Address"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the address",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *
+    *     @OA\Response(
+    *         response=200,
+    *         description="Endereço removido com sucesso"
+    *     )
+    * )
+    */
     public function delete(Request $request)
     {
         if ($this->isValidDeleteAddress($request)) {

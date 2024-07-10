@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('stateAbbr');
             $table->string('country');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

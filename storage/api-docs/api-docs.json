@@ -541,7 +541,77 @@
                 "operationId": "971db9bc974c0e607288cfe7ecc10096",
                 "responses": {
                     "200": {
-                        "description": "Lista o usuário conectado e seus endereços"
+                        "description": "Lista o usuário conectado e seus endereços",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 46
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "inactive"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Dr. Adriele Daniele Bonilha"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "josefina.dacruz@yahoo.com"
+                                                },
+                                                "cpf": {
+                                                    "type": "string",
+                                                    "example": "190.176.342-00"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "(68) 96398-7768"
+                                                },
+                                                "addresses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 117
+                                                            },
+                                                            "address": {
+                                                                "type": "string",
+                                                                "example": "37059-597, R. Aurora, 226. Bc. 35 Ap. 12\\nPorto Regiane do Sul - MG"
+                                                            },
+                                                            "postcode": {
+                                                                "type": "string",
+                                                                "example": "63600-159"
+                                                            },
+                                                            "city": {
+                                                                "type": "string",
+                                                                "example": "São Benedito"
+                                                            },
+                                                            "stateAbbr": {
+                                                                "type": "string",
+                                                                "example": "ES"
+                                                            },
+                                                            "country": {
+                                                                "type": "string",
+                                                                "example": "Vanuatu"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -566,25 +636,31 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
+                                        "example": "Jão do Teste",
                                         "nullable": true
                                     },
                                     "email": {
                                         "type": "string",
+                                        "example": "jao@email.com",
                                         "nullable": true
                                     },
                                     "phone": {
                                         "type": "string",
+                                        "example": "(99) 99234-9876",
                                         "nullable": true
                                     },
                                     "cpf": {
                                         "type": "string",
+                                        "example": "999.111.000-09",
                                         "nullable": true
                                     },
                                     "password": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "10987654321"
                                     },
                                     "new_password": {
                                         "type": "string",
+                                        "example": "12345678",
                                         "nullable": true
                                     }
                                 },
@@ -595,7 +671,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Atualiza dados do usuário conectado"
+                        "description": "Atualiza dados do usuário conectado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -614,7 +703,20 @@
                 "operationId": "0027a09f62c7072bb8c746aded62c68f",
                 "responses": {
                     "200": {
-                        "description": "Remove usuário conectado assim como todos os endereços associados a ele"
+                        "description": "Remove usuário conectado assim como todos os endereços associados a ele",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "successfully deleted user"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -622,6 +724,15 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },

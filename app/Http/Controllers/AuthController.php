@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
  *     name="Authenticate",
  *     description="Registration and user authentication"
  * )
+ *  * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
  */
 class AuthController extends Controller
 {

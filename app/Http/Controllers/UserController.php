@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -19,14 +21,11 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private UserRepository $userRepository; 
+     
+    public function __construct(UserRepository $userRepository)
     {
-        //
+        $this->userRepository = $userRepository;
     }
     /**
      * @OA\Get(
@@ -68,12 +67,14 @@ class UserController extends Controller
     {
         
         try {
-            $user = auth()->user();
-            $addresses = $user->addresses;
-            return response()->json(['user' => $user, 'addresses' => $addresses], 200);
+            
+            return response()->json([
+                    'user' => $this->userRepository->getUserData()
+                ]);
+    
         } catch (\Throwable $th) {
            
-            return response()->json(['message' => $th->getMessage()], 500);
+            return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -108,7 +109,7 @@ class UserController extends Controller
         if ($this->isValidUpdateData($request)) {
 
             try {
-              
+                
                 $user = auth()->user();
                 if (Hash::check($request->password, $user->password)) {
 
@@ -118,18 +119,22 @@ class UserController extends Controller
                         $filteredData = $request->only(['name', 'email','cpf', 'phone']); 
                         $filteredData['password'] = Hash::make($filteredDataPassword['new_password']); 
 
-                        User::where('id', $user->id)->update($filteredData);
-
-                        return response()->json(['message' => 'updated data and password'], 200);
+                        $this->userRepository->updateUser($filteredData);
+                        
+                        return response()->json(['message' => 'updated data and password']);
                     }
                     
                     $filteredData = $request->only(['name', 'email','cpf', 'phone']);
-                    User::where('id', $user->id)->update($filteredData);
-                    return response()->json(['message' => 'Updated successfully'], 200);
+                    $this->userRepository->updateUser($filteredData);
+
+                    return response()->json(['message' => 'Updated successfully']);
                 }
-                return response()->json(['message' => 'Unauthorized'], 401);
+
+                return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+
             } catch (\Throwable $th) {
-                return response()->json(['message' => $th->getMessage()], 500);
+
+                return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -158,14 +163,15 @@ class UserController extends Controller
                 $user = auth()->user();
                 if (Hash::check($request->password, $user->password)) {
                     
+                    $this->userRepository->deleteUser();
                     auth()->logout();
-                    User::where('id', $user->id)->delete();
+
                     return response()->json(['message' => 'successfully deleted user']);
                 }
-                return response()->json(['message' => 'Unauthorized'], 401);
+                return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
             } catch (\Throwable $th) {
                 //throw $th;
-                return response()->json(['message' => $th->getMessage()], 500);
+                return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }

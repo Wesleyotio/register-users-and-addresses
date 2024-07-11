@@ -29,4 +29,11 @@ composer install
 ```sh
  php artisan migrate
 ```
-  
+Agora fica a seu critério, caso queira rodar os testes execute
+
+```sh
+ ./vendor/bin/phpunit
+```
+Caso queira consultar a documentação para teste vai o click em
+[documentação swagger](http://localhost/api/documentation).
+

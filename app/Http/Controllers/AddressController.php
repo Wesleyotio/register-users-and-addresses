@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Repositories\Interfaces\AddressRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
  /**
@@ -16,14 +18,11 @@ use Illuminate\Support\Facades\Hash;
 class AddressController extends Controller
 {
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private AddressRepository $addressRepository;
+
+    public function __construct(AddressRepository $addressRepository)
     {
-        //
+        $this->addressRepository = $addressRepository;
     }
         /**
      * @OA\Get(
@@ -105,37 +104,18 @@ class AddressController extends Controller
 
                 $filteredData = $request->only([ 'address', 'postcode', 'city', 'stateAbbr', 'country']);
     
-                $query = Address::where('user_id', $user->id);
-    
-                if (array_key_exists('address', $filteredData) ) {
-                    $query = $query->where('address',$filteredData['address']);
-                }
-    
-                if (array_key_exists('postcode', $filteredData) ) {
-                    $query = $query->where('postcode',$filteredData['postcode']);
-                }
-    
-                if (array_key_exists('city', $filteredData) ) {
-                    $query = $query->where('city',$filteredData['city']);
-                }
-    
-                if (array_key_exists('stateAbbr', $filteredData) ) {
-                    $query = $query->where('stateAbbr',$filteredData['stateAbbr']);
-                }
-    
-                if (array_key_exists('country', $filteredData) ) {
-                    $query = $query->where('country',$filteredData['country']);
-                }
-    
-                $addresses = $query->get();
-                return response()->json(['addresses' => $addresses], 200);
+                $addresses = $this->addressRepository->getFilterAddresses($user->id, $filteredData);
+
+                return response()->json(['addresses' => $addresses]);
             }
 
-            $addresses = Address::where('user_id', $user->id)->where('id', $ $filteredForId['id'])->get();
-            return response()->json(['addresses' => $addresses], 200);
+           
+            $addresses = $this->addressRepository->getAllAddresses($user->id, $filteredForId['id']);
+        
+            return response()->json(['addresses' => $addresses]);
         } catch (\Throwable $th) {
            
-            return response()->json(['message' => $th->getMessage()], 500);
+            return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -170,14 +150,14 @@ class AddressController extends Controller
         if ($this->isValidAddressData($request)) {
 
             try {
-                $user = auth()->user();
+               
                 $filteredData = $request->only([ 'address', 'postcode', 'city', 'stateAbbr', 'country']);
 
-                $user->addresses()->create($filteredData);
+                $this->addressRepository->createAddress($filteredData);
 
-                return response()->json(['message' => 'Created successfully address'], 201);
+                return response()->json(['message' => 'Created successfully address'], Response::HTTP_CREATED);
             } catch (\Throwable $th) {
-                return response()->json(['message' => $th->getMessage()], 500);
+                return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
     
             }
         }
@@ -226,15 +206,13 @@ class AddressController extends Controller
             
                 $filteredData = $request->only([ 'address', 'postcode', 'city', 'stateAbbr', 'country']);
 
-                Address::where('user_id', $user->id)
-                    ->where('id', $request->id)
-                    ->update($filteredData);
-
-                return response()->json(['message' => 'Updated successfully address'], 200);
+                $this->addressRepository->updateAddress($user->id, $request->id, $filteredData);
+                
+                return response()->json(['message' => 'Updated successfully address']);
                 
                
             } catch (\Throwable $th) {
-                return response()->json(['message' => $th->getMessage()], 500);
+                return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -280,15 +258,14 @@ class AddressController extends Controller
                 $user = auth()->user();
                 if (Hash::check($request->password, $user->password)) {
                     
-                    Address::where('user_id', $user->id)
-                        ->where('id', $request->id)
-                        ->delete();
+                    $this->addressRepository->deleteAddress($user->id, $request->id);
+                    
                     return response()->json(['message' => 'successfully deleted address']);
                 }
-                return response()->json(['message' => 'Unauthorized'], 401);
+                return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
             } catch (\Throwable $th) {
                 //throw $th;
-                return response()->json(['message' => $th->getMessage()], 500);
+                return response()->json(['message' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
